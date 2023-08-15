@@ -71,7 +71,7 @@ localhost:3000 :
          "alamat": "kalirase, trimulyo",
          "kode_pos": "55513"
         }
-        - api/klinik/{id} [GET]
+   - api/klinik/{id} [GET]
         RES [200/404]{
         "id": 2,
         "name": "klinik 2"

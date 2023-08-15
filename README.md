@@ -89,7 +89,7 @@ localhost:3000 :
          "kode_pos" : "55513",
          "alamat" : "kalirase, trimulyo"
        }
-- api/relasi/relasidokterklinik/ [GET] (all)
+     - api/relasi/relasidokterklinik/ [GET] (all)
           RES [200] [
                {
                      "dokter_name": "John Doe",
@@ -101,7 +101,7 @@ localhost:3000 :
                }
           ]
      
-- api/relasi/relasidokterklinik/{id} [GET] 
+     - api/relasi/relasidokterklinik/{id} [GET] 
           RES [200]{
                "dokter_name": "John Doe",
               "nama_klinik": "klinik 3"

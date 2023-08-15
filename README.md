@@ -58,7 +58,7 @@ localhost:3000 :
         }
 
 3. Klinik
-        - api/klinik/ [POST]
+   - api/klinik/ [POST]
         Schema {
          "nama_klinik" : "klinik 1",
          "kode_pos" : "55513",
@@ -76,7 +76,8 @@ localhost:3000 :
         "id": 2,
         "name": "klinik 2"
         }
-        - api/klink/{id} [DELETE]
+
+   - api/klink/{id} [DELETE]
         RES [200/404]{
            "message": "Klinik deleted successfully"
         }

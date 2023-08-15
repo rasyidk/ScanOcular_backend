@@ -81,6 +81,33 @@ localhost:3000 :
         RES [200/404]{
            "message": "Klinik deleted successfully"
         }
-   
-       
-       
+     
+4. Relasi
+     - api/relasi/relasidokterklinik/ [POST] (all)
+       Schme { 
+         "nama_klinik" : "klinik 1",
+         "kode_pos" : "55513",
+         "alamat" : "kalirase, trimulyo"
+       }
+   - api/relasi/relasidokterklinik/ [GET] (all)
+          RES [200] [
+               {
+                     "dokter_name": "John Doe",
+                   "nama_klinik": "klinik 3"
+               },
+      {
+                     "dokter_name": "John Doe",
+                   "nama_klinik": "klinik 3"
+               }
+          ]
+     
+      - api/relasi/relasidokterklinik/{id} [GET] 
+          RES [200]{
+               "dokter_name": "John Doe",
+              "nama_klinik": "klinik 3"
+          }
+
+        - api/relasi/relasidokterklinik/{id} [DELETE] 
+          RES [200]{
+               "message" : "sukses"
+          }

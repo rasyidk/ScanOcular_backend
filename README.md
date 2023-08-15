@@ -111,3 +111,27 @@ localhost:3000 :
           RES [200]{
                "message" : "sukses"
           }
+5. Pemeriksaan
+     - api/pemeriksaan/ [POST] 
+        Schema {
+              "bc_id" : "187987897789779",
+              "date" : "2019-1-1",
+              "url_image" : "www.urlimage.com",
+              "relasidokterklinik" : "1",
+              "user": "1"
+          }
+        Res [201/404] {
+            "message": "pemeriksaan successfully imported"
+       }
+      - api/pemeriksaan/{id} [GET]
+        Res [200] {
+        [{
+          "user": relasi_queryset.user.name,
+             "bc_id": relasi_queryset.bc_id
+        }]
+        }
+     - api/pemeriksaan/{id} [DELETE]
+       Res [200] {
+            "message" : "deleted succesfully"
+       }
+        

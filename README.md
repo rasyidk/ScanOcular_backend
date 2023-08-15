@@ -58,7 +58,7 @@ localhost:3000 :
         }
 
 3. Klinik
-        -  api/klinik/ [POST]
+        - api/klinik/ [POST]
         Schema {
          "nama_klinik" : "klinik 1",
          "kode_pos" : "55513",

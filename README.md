@@ -32,7 +32,7 @@ localhost:3000 :
        }
 
 2. Dokter
-        - api/users/dokter/signup/ [POST]
+   - api/users/dokter/signup/ [POST]
         Schema {
               "NIK": "1234567890123467",
               "STR" : "aaaa",
@@ -48,7 +48,7 @@ localhost:3000 :
               "email": "johndoe@example112.com"
         }
    
-        - api/users/dokter/signin/ [POST]
+   - api/users/dokter/signin/ [POST]
         Schema {
          "email": "johndoe@example1.com",
          "password": "yourpassword1"
@@ -58,6 +58,28 @@ localhost:3000 :
         }
 
 3. Klinik
-        -  api/klinik/
+        -  api/klinik/ [POST]
+        Schema {
+         "nama_klinik" : "klinik 1",
+         "kode_pos" : "55513",
+         "alamat" : "kalirase, trimulyo"
+        }
+        Res [201/404]{
+         "message": "Klinik registered successfully",
+         "id": 5,
+         "nama_klinik": "klinik 1",
+         "alamat": "kalirase, trimulyo",
+         "kode_pos": "55513"
+        }
+        - api/klinik/{id} [GET]
+        RES [200/404]{
+        "id": 2,
+        "name": "klinik 2"
+        }
+        - api/klink/{id} [DELETE]
+        RES [200/404]{
+           "message": "Klinik deleted successfully"
+        }
+   
        
        

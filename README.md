@@ -101,13 +101,13 @@ localhost:3000 :
                }
           ]
      
-      - api/relasi/relasidokterklinik/{id} [GET] 
+     - api/relasi/relasidokterklinik/{id} [GET] 
           RES [200]{
                "dokter_name": "John Doe",
               "nama_klinik": "klinik 3"
           }
 
-        - api/relasi/relasidokterklinik/{id} [DELETE] 
+     - api/relasi/relasidokterklinik/{id} [DELETE] 
           RES [200]{
                "message" : "sukses"
           }

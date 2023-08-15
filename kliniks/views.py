@@ -22,7 +22,6 @@ def klinik(request):
             "nama_klinik": klinik.nama_klinik,
             "alamat": klinik.alamat,
             "kode_pos": klinik.kode_pos,
-            # Add more fields as needed
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -35,25 +34,12 @@ def klinik_detail(request, klinik_id):
         response_data = {
             "id": klinik.id,
             "name": klinik.nama_klinik,
-            # Add more fields as needed
         }
         return Response(response_data)
 
     elif request.method == "DELETE":
         klinik = get_object_or_404(Klinik, id=klinik_id)
         klinik.delete()
-        return Response({"message": "Klinik deleted successfully"})
-
-
-# @api_view(["DELETE"])
-# def klinik_delete(request, klinik_id):
-#     klinik = get_object_or_404(Klinik, id=klinik_id)
-#     # Perform actions with the klinik object, such as retrieving details
-#     # Customize the data you want to return in the JSON response
-#     klinik.delete()
-#     return Response({"message": "Klinik deleted successfully"})
-
-
-# @api_view(["DELETE"])
-# def klinik(request):
-#     return Response("POST", status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"message": "Klinik deleted successfully"}, status=status.HTTP_200_OK
+        )

@@ -28,7 +28,7 @@ def relasidokterklinik(request):
             relasi_data.append(relasi_info)
             # Use the retrieved fields as needed
 
-        return Response(relasi_data, status=status.HTTP_201_CREATED)
+        return Response(relasi_data, status=status.HTTP_200_OK)
 
     if request.method == "POST":
         serializer = RelasidokterklinikSerializer(data=request.data)
@@ -44,9 +44,25 @@ def relasidokterklinik(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["DELETE"])
+@api_view(["DELETE", "GET"])
 def relasi_detail(request, relasi_id):
-    relasi = get_object_or_404(Klinik, id=relasi_id)
-    relasi.delete()
+    if request.method == "DELETE":
+        relasi = get_object_or_404(Klinik, id=relasi_id)
+        relasi.delete()
 
-    return Response({"message": "Klinik deleted successfully"})
+        return Response({"message": "Klinik deleted successfully"})
+
+    if request.method == "GET":
+        relasi_queryset = Relasidokterklinik.objects.select_related(
+            "dokter", "klinik"
+        ).get(id=relasi_id)
+
+        dokter_name = relasi_queryset.dokter.name
+        klinik_nama = relasi_queryset.klinik.nama_klinik
+
+        relasi_info = {
+            "dokter_name": dokter_name,
+            "nama_klinik": klinik_nama,
+        }
+
+        return Response(relasi_info, status=status.HTTP_201_CREATED)

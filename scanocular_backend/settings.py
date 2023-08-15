@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "dokters.apps.DoktersConfig",
     "kliniks.apps.KliniksConfig",
     "relasidokterkliniks.apps.RelasidokterkliniksConfig",
+    "pemeriksaans.apps.PemeriksaansConfig",
     "rest_framework",
 ]
 

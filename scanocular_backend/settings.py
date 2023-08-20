@@ -25,8 +25,8 @@ SECRET_KEY = "django-insecure-m4yg)jxslp$!_u((+b$asc9t&v!hs8lnxpi(a0v_fu!d)n9599
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
-
 
 # Application definition
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "relasidokterkliniks.apps.RelasidokterkliniksConfig",
     "pemeriksaans.apps.PemeriksaansConfig",
     "rest_framework",
+    "example",
 ]
 
 MIDDLEWARE = [
@@ -73,8 +74,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "scanocular_backend.wsgi.application"
-
+# WSGI_APPLICATION = "scanocular_backend.wsgi.application"
+WSGI_APPLICATION = "vercel_app.wsgi.app"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -82,10 +83,10 @@ WSGI_APPLICATION = "scanocular_backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "scanocular",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "localhost",  # Change this if your MySQL server is on a different host
+        "NAME": "u556939220_scanocular2",
+        "USER": "u556939220_scanocular2",
+        "PASSWORD": "Scanocular2",
+        "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
         "PORT": "3306",  # Change this if your MySQL server is using a different port
     }
 }

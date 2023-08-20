@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "relasidokterkliniks.apps.RelasidokterkliniksConfig",
     "pemeriksaans.apps.PemeriksaansConfig",
     "example.apps.ExampleConfig",
+    "example",
     "rest_framework",
 ]
 

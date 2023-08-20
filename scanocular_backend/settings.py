@@ -75,7 +75,7 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = "scanocular_backend.wsgi.application"
-WSGI_APPLICATION = "vercel_app.wsgi.app"
+WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

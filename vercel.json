@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "scanocular_backend/wsgi.py",
+      "src": "vercel_app/wsgi.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "scanocular_backend/wsgi.py"
+      "dest": "vercel_app/wsgi.py"
     }
   ]
 }

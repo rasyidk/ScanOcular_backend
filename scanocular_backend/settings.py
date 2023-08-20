@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "scanocular_backend.wsgi.application"
+WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 # WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 # Database

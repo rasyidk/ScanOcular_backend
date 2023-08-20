@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     "kliniks.apps.KliniksConfig",
     "relasidokterkliniks.apps.RelasidokterkliniksConfig",
     "pemeriksaans.apps.PemeriksaansConfig",
+    "example.apps.ExampleConfig",
     "rest_framework",
-    "example",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
-# WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

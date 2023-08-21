@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "users.apps.UsersConfig",
+    "dokters.apps.DoktersConfig",
+    "kliniks.apps.KliniksConfig",
+    "relasidokterkliniks.apps.RelasidokterkliniksConfig",
+    "pemeriksaans.apps.PemeriksaansConfig",
     "example",
 ]
 

@@ -81,7 +81,16 @@ WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
-DATABASES = {}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "u556939220_scanocular2",
+        "USER": "u556939220_scanocular2",
+        "PASSWORD": "Scanocular2",
+        "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
+        "PORT": "3306",  # Change this if your MySQL server is using a different port
+    }
+}
 
 
 # Password validation

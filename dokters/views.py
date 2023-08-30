@@ -46,7 +46,13 @@ def signin(request):
         hashed_password = user.password.encode("utf-8")
 
         if bcrypt.checkpw(password.encode("utf-8"), hashed_password):
-            return Response({"message": "Sign-in successful!"})
+            response_data = {
+                "name": user.name,
+                "email": user.email,
+                "alamat": user.alamat,
+                # Add more fields as needed
+            }
+            return Response({"data": response_data})
         else:
             return Response(
                 {"message": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED

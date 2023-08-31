@@ -30,7 +30,6 @@ def signup(request):
             "user_id": user.id,
             "name": user.name,
             "email": user.email,
-            # Add more fields as needed
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -50,7 +49,6 @@ def signin(request):
                 "name": user.name,
                 "email": user.email,
                 "alamat": user.alamat,
-                # Add more fields as needed
             }
             return Response({"data": response_data})
         else:

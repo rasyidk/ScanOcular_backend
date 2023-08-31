@@ -44,46 +44,47 @@ def readb64(uri):
 def cekMata(request):
     json_data = json.loads(request.body)
 
-    img = readb64(json_data["img"])
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # img = readb64(json_data["img"])
+    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Load the cascade
-    face_cascade = cv2.CascadeClassifier("./alleye.xml")
+    # # Load the cascade
+    # face_cascade = cv2.CascadeClassifier("./alleye.xml")
 
-    # Detect faces
-    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    # # Detect faces
+    # faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
-    global xx
-    # Draw rectangle around the faces and crop the faces
-    n = 1
-    most = {"luas": 0, "faces": 0}
-    for x, y, w, h in faces:
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
-        faces = img[y : y + h, x : x + w]
-        # cv2.imwrite("face" + str(n) + ".jpg", faces)
-        luas = w * h
-        if most["luas"] < luas:
-            most["luas"] = luas
-            xx = faces
-            print(n)
-        n = n + 1
+    # global xx
+    # # Draw rectangle around the faces and crop the faces
+    # n = 1
+    # most = {"luas": 0, "faces": 0}
+    # for x, y, w, h in faces:
+    #     cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    #     faces = img[y : y + h, x : x + w]
+    #     # cv2.imwrite("face" + str(n) + ".jpg", faces)
+    #     luas = w * h
+    #     if most["luas"] < luas:
+    #         most["luas"] = luas
+    #         xx = faces
+    #         print(n)
+    #     n = n + 1
 
-    # cv2.imwrite("detcted.jpg", img)
+    # # cv2.imwrite("detcted.jpg", img)
 
-    retval, buffer = cv2.imencode(".jpg", img)
-    # Convert to base64 encoding and show start of data
-    jpg_as_text = base64.b64encode(buffer)
-    # print(jpg_as_text)
+    # retval, buffer = cv2.imencode(".jpg", img)
+    # # Convert to base64 encoding and show start of data
+    # jpg_as_text = base64.b64encode(buffer)
+    # # print(jpg_as_text)
 
-    rf = Roboflow(api_key="jROYHpfpWHzlprwa48L4")
-    project = rf.workspace().project("eye-health3")
-    model = project.version(1).model
+    # rf = Roboflow(api_key="jROYHpfpWHzlprwa48L4")
+    # project = rf.workspace().project("eye-health3")
+    # model = project.version(1).model
 
-    # infer on a local image
-    # print(model.predict(xx, confidence=40, overlap=30).json())
-    res = model.predict(xx, confidence=40, overlap=30).json()
+    # # infer on a local image
+    # # print(model.predict(xx, confidence=40, overlap=30).json())
+    # res = model.predict(xx, confidence=40, overlap=30).json()
 
-    return Response(res["predictions"][0]["class"], status=status.HTTP_200_OK)
+    # return Response(res["predictions"][0]["class"], status=status.HTTP_200_OK)
+    return Response("tes", status=status.HTTP_200_OK)
 
 
 @api_view(["POST", "GET", "DELETE"])

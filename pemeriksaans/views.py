@@ -70,7 +70,7 @@ def cekMata(request):
             print(n)
         n = n + 1
 
-    # cv2.imwrite("detcted.jpg", img)
+    cv2.imwrite("matadeteksi.jpg", xx)
 
     retval, buffer = cv2.imencode(".jpg", img)
     # Convert to base64 encoding and show start of data
@@ -81,9 +81,12 @@ def cekMata(request):
     project = rf.workspace().project("eye-health3")
     model = project.version(1).model
 
+    print("loading...")
     # infer on a local image
     # print(model.predict(xx, confidence=40, overlap=30).json())
     res = model.predict(xx, confidence=60, overlap=40).json()
+
+    print("selesai")
 
     return Response(res, status=status.HTTP_200_OK)
     # return Response("res", status=status.HTTP_200_OK)

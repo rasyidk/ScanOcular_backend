@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "203.175.10.56"]
 
 
 # Application definition
@@ -82,12 +82,20 @@ WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "u556939220_scanocular2",
+    #     "USER": "u556939220_scanocular2",
+    #     "PASSWORD": "Scanocular2",
+    #     "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
+    #     "PORT": "3306",  # Change this if your MySQL server is using a different port
+    # }
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "u556939220_scanocular2",
-        "USER": "u556939220_scanocular2",
-        "PASSWORD": "Scanocular2",
-        "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
+        "NAME": "scanocular",
+        "USER": "root",
+        "PASSWORD": "123",
+        "HOST": "localhost",  # Change this if your MySQL server is on a different host
         "PORT": "3306",  # Change this if your MySQL server is using a different port
     }
 }

@@ -41,7 +41,7 @@ def readb64(uri):
 
 
 @api_view(["POST"])
-def cekMata(request):
+def cekMata_katarak(request):
     json_data = json.loads(request.body)
 
     img = readb64(json_data["img"])
@@ -108,6 +108,26 @@ def cekMata_diabetesretinopati(request):
     response = requests.post(url, params=params, data=img, headers=headers)
 
     # Check for success or error
+    if response.status_code == 200:
+        print(response.json())
+    else:
+        print("Error:", response.text)
+
+    return Response(response.json(), status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def cekMata_katarak_type2(request):
+    json_data = json.loads(request.body)
+
+    img = json_data["img"]
+    user_id = json_data["user_id"]
+
+    url = "https://classify.roboflow.com/eye_diseases_detects/1"
+    params = {"api_key": "jROYHpfpWHzlprwa48L4"}
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(url, params=params, data=img, headers=headers)
+
     if response.status_code == 200:
         print(response.json())
     else:

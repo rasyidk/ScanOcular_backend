@@ -83,7 +83,7 @@ def cekMata(request):
     # print(model.predict(xx, confidence=40, overlap=30).json())
     res = model.predict(xx, confidence=40, overlap=30).json()
 
-    return Response(res["predictions"][0]["class"], status=status.HTTP_200_OK)
+    return Response(res, status=status.HTTP_200_OK)
     # return Response("res", status=status.HTTP_200_OK)
 
 

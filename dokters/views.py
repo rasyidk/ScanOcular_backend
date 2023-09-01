@@ -47,6 +47,7 @@ def signin(request):
 
         if bcrypt.checkpw(password.encode("utf-8"), hashed_password):
             response_data = {
+                "user_id": user.id,
                 "name": user.name,
                 "email": user.email,
                 "alamat": user.alamat,

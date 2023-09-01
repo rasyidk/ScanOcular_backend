@@ -45,6 +45,8 @@ def cekMata(request):
     json_data = json.loads(request.body)
 
     img = readb64(json_data["img"])
+    user_id = json_data["user_id"]
+
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Load the cascade
@@ -81,7 +83,7 @@ def cekMata(request):
 
     # infer on a local image
     # print(model.predict(xx, confidence=40, overlap=30).json())
-    res = model.predict(xx, confidence=40, overlap=30).json()
+    res = model.predict(xx, confidence=60, overlap=40).json()
 
     return Response(res, status=status.HTTP_200_OK)
     # return Response("res", status=status.HTTP_200_OK)
@@ -89,8 +91,9 @@ def cekMata(request):
 
 @api_view(["POST"])
 def cekMata_diabetesretinopati(request):
-    img = json.loads(request.body)
-    img = img["img"]
+    json_data = json.loads(request.body)
+    img = json_data["img"]
+    user_id = json_data["user_id"]
 
     url = "https://classify.roboflow.com/diabetic-retinopathy-screening-ai/1"
     params = {"api_key": "jROYHpfpWHzlprwa48L4"}

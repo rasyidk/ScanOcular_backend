@@ -10,10 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+import os
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Quick-start development settings - unsuitable for production
@@ -82,22 +89,22 @@ WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.mysql",
-    #     "NAME": "u556939220_scanocular2",
-    #     "USER": "u556939220_scanocular2",
-    #     "PASSWORD": "Scanocular2",
-    #     "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
-    #     "PORT": "3306",  # Change this if your MySQL server is using a different port
-    # }
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "scanocular",
-        "USER": "root",
-        "PASSWORD": "123",
-        "HOST": "localhost",  # Change this if your MySQL server is on a different host
+        "NAME": "u556939220_scanocular2",
+        "USER": "u556939220_scanocular2",
+        "PASSWORD": "Scanocular2",
+        "HOST": "trpl.space",  # Change this if your MySQL server is on a different host
         "PORT": "3306",  # Change this if your MySQL server is using a different port
     }
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": "scanocular",
+    #     "USER": "root",
+    #     "PASSWORD": "123",
+    #     "HOST": "localhost",  # Change this if your MySQL server is on a different host
+    #     "PORT": "3306",  # Change this if your MySQL server is using a different port
+    # }
 }
 
 

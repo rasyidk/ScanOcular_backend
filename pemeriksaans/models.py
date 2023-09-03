@@ -13,5 +13,7 @@ class Pemeriksaan(models.Model):
         Relasidokterklinik, on_delete=models.CASCADE, related_name="relasidokterklinik"
     )
     bc_id = models.CharField(max_length=255)
-    date = models.DateField()
+    date = models.TextField()
     url_image = models.TextField()
+    diagnosa = models.TextField()
+    penyakit = models.TextField()

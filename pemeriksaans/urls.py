@@ -8,6 +8,7 @@ from pemeriksaans.views import (
     cekMata_katarak,
     cekMata_katarak_type2,
     cekMata_diabetesretinopati,
+    cekMata_sc,
 )
 
 urlpatterns = [
@@ -15,5 +16,6 @@ urlpatterns = [
     path("cekmata/katarak", cekMata_katarak, name="cekMata1"),
     path("cekmata/katarak2", cekMata_katarak_type2, name="cekMata2"),
     path("cekmata/dr", cekMata_diabetesretinopati, name="cekMata_diabetesretinopati"),
+    path("cekmata/sc", cekMata_sc, name="getsmartcontract"),
     path("<int:pemeriksaan_id>", pemeriksaan_detail, name="pemeriksaan"),
 ]

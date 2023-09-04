@@ -5,6 +5,7 @@ from rest_framework import status
 
 from pemeriksaans.serializer import PemeriksaanSerializer
 from pemeriksaans.models import Pemeriksaan
+from users.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 
@@ -24,6 +25,103 @@ import datetime
 import pytz
 
 from web3 import Web3, Account
+
+import smtplib
+
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
+import os
+
+
+def sendToEmail(currentTime, user_id, img, diagnosa):
+    user = get_object_or_404(User, id=user_id)
+    # response_data = {
+    #         "id": userget.id,
+    #         "name": userget.name,
+    #         "nik": userget.NIK,
+    #         "email": userget.email,
+    #     }
+
+    # Email configuration
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587  # Use 587 for TLS
+    smtp_username = "scanocular@gmail.com"
+    smtp_password = "nemkzgrrsfwdfeha"  # You may need an "App Password" if 2-Step Verification is enabled
+
+    # Create the message object
+    msg = MIMEMultipart()
+
+    # Add sender, recipient, subject, and body
+    msg["From"] = "scanocular@gmail.com"
+    msg["To"] = user.email
+    msg["Subject"] = "Hasil Pemeriksaan SCANOCULAR"
+    body = "Hello, this is the body of your email."
+
+    html_body = """
+    <html>
+    <head></head>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #333; text-align: center;">HASIL PEMERIKSAAN SCANOCULAR</h1>
+        <p style="font-size: 16px; line-height: 1.6; color: #666;">
+            Tanggal Pemindaian : <b>{currentTime}</b><br>
+            Nama : <b>{nama}</b><br>
+            NIK : <b>{nik}</b><br>
+            Diagnosa : <b>{diagnosa}</b><br>
+            Citra :
+        </p>
+        <p style="font-size: 16px; line-height: 1.6; color: #666;">
+        Hasil pemeriksaan akan dikirim ke tenaga ahli pada bidang mata dan akan dilakukan verifikasi apakah diagnosa terkonfirmasi. Informasi terkait hasil verifikasi akan dikirim melalui aplikasi Scanocular.
+        </p>
+        </div>
+    </body>
+    </html>
+    """
+
+    img_copy = np.ascontiguousarray(img)
+    img_base64 = base64.b64encode(img_copy).decode("utf-8")
+    formatted_html = html_body.format(
+        currentTime=currentTime,
+        nama=user.name,
+        nik=user.NIK,
+        diagnosa=diagnosa,
+    )
+
+    msg.attach(MIMEText(formatted_html, "html"))
+
+    file_path = "./Dokumen Hasil Pemeriksaan.pdf"  # Replace with the path to your file
+    if os.path.exists(file_path):
+        attachment = open(file_path, "rb")
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload((attachment).read())
+        encoders.encode_base64(part)
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {os.path.basename(file_path)}",
+        )
+        msg.attach(part)
+
+    # Connect to Gmail's SMTP server, start a TLS connection, and log in
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        exit()
+
+    # Send the email
+    try:
+        server.sendmail(smtp_username, "sydcloneofficial@gmail.com", msg.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+    # Close the SMTP server connection
+    server.quit()
 
 
 def getCurrentTime():
@@ -57,7 +155,7 @@ def base64ToImg(imgname, data):
     img.save(imgname)
 
 
-def deploysmartcontract(user_id, datetime, img, diagnosa):
+def deploysmartcontract(user_id, datetime, img, diagnosa, penyakit):
     polygon_rpc_url = "https://rpc-mumbai.maticvigil.com/"
     contract_address = "0x647d314496b374aBB4D3dd819E2a20E0D1859896"  # Replace with your contract's address
     private_key = "db7038c44c183593323f3ae779d8559248dc5ec77a2a79b72ef0d6aba8a70620"  # Replace with your private key
@@ -73,6 +171,7 @@ def deploysmartcontract(user_id, datetime, img, diagnosa):
                 {"internalType": "string", "name": "_datetime", "type": "string"},
                 {"internalType": "string", "name": "_img", "type": "string"},
                 {"internalType": "string", "name": "_diagnosa", "type": "string"},
+                {"internalType": "string", "name": "_penyakit", "type": "string"},
             ],
             "stateMutability": "nonpayable",
             "type": "constructor",
@@ -99,11 +198,19 @@ def deploysmartcontract(user_id, datetime, img, diagnosa):
             "type": "function",
         },
         {
+            "inputs": [],
+            "name": "penyakit",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
             "inputs": [
                 {"internalType": "string", "name": "new_user_id", "type": "string"},
                 {"internalType": "string", "name": "new_datetime", "type": "string"},
                 {"internalType": "string", "name": "new_img", "type": "string"},
                 {"internalType": "string", "name": "new_diagnosa", "type": "string"},
+                {"internalType": "string", "name": "new_penyakit", "type": "string"},
             ],
             "name": "updateMessage",
             "outputs": [],
@@ -124,9 +231,8 @@ def deploysmartcontract(user_id, datetime, img, diagnosa):
     # Set the sender's account using your private key (be careful with private keys)
     sender_account = Account.from_key(private_key)
 
-    new_message = "Hello, Python and Polygon!"
     tx_hash = contract.functions.updateMessage(
-        user_id, datetime, img, diagnosa
+        user_id, datetime, img, diagnosa, penyakit
     ).build_transaction(
         {
             "chainId": 80001,  # Mumbai Testnet chain ID
@@ -141,6 +247,95 @@ def deploysmartcontract(user_id, datetime, img, diagnosa):
     print("Transaction Hash:", tx_receipt.hex())
 
     return tx_receipt.hex()
+
+
+def getsmartcontract(bc_id):
+    web3 = Web3(Web3.HTTPProvider("https://rpc-mumbai.maticvigil.com/"))
+    contract_abi = [
+        {
+            "inputs": [
+                {"internalType": "string", "name": "_user_id", "type": "string"},
+                {"internalType": "string", "name": "_datetime", "type": "string"},
+                {"internalType": "string", "name": "_img", "type": "string"},
+                {"internalType": "string", "name": "_diagnosa", "type": "string"},
+                {"internalType": "string", "name": "_penyakit", "type": "string"},
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor",
+        },
+        {
+            "inputs": [],
+            "name": "datetime",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "diagnosa",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "img",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "penyakit",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [
+                {"internalType": "string", "name": "new_user_id", "type": "string"},
+                {"internalType": "string", "name": "new_datetime", "type": "string"},
+                {"internalType": "string", "name": "new_img", "type": "string"},
+                {"internalType": "string", "name": "new_diagnosa", "type": "string"},
+                {"internalType": "string", "name": "new_penyakit", "type": "string"},
+            ],
+            "name": "updateMessage",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "user_id",
+            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "stateMutability": "view",
+            "type": "function",
+        },
+    ]
+
+    contract_address = "0x647d314496b374aBB4D3dd819E2a20E0D1859896"  # Replace with your contract's address
+
+    # Replace with your transaction hash
+    transaction_hash = bc_id
+
+    try:
+        transaction = web3.eth.get_transaction(transaction_hash)
+        if transaction:
+            input_data = transaction["input"]
+            if input_data:
+                # Decode input data using the contract ABI
+                contract = web3.eth.contract(address=contract_address, abi=contract_abi)
+                decoded_input = contract.decode_function_input(input_data)
+
+                print("Decoded Input Data:", decoded_input[1])
+                return decoded_input[1]
+
+            else:
+                print("Input Data is empty.")
+        else:
+            print("Transaction not found.")
+    except Exception as e:
+        print("Error:", str(e))
 
 
 def savePemeriksaanToDB(datax):
@@ -232,7 +427,9 @@ def cekMata_katarak(request):
         currentTime = getCurrentTime()
         diagnosa = res["predictions"][0]["class"]
 
-        tx_hash = deploysmartcontract(str(user_id), imageName, currentTime, diagnosa)
+        tx_hash = deploysmartcontract(
+            str(user_id), imageName, currentTime, diagnosa, "katarak"
+        )
 
         cv2.imwrite(
             "./media/hasilpemeriksaan/" + imageName + "",
@@ -261,6 +458,8 @@ def cekMata_katarak(request):
             }
         )
 
+        sendToEmail(currentTime, user_id, xx, diagnosa)
+
         return Response(
             {"diagnosa": diagnosa, "bc_id": tx_hash, "pemeriksaan_id": pemeriksaan_id},
             status=status.HTTP_200_OK,
@@ -272,6 +471,15 @@ def cekMata_katarak(request):
         )
 
     # return Response("res", status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def cekMata_sc(request):
+    json_data = json.loads(request.body)
+    bc_id = json_data["bc_id"]
+    res = getsmartcontract(bc_id)
+
+    return Response(res, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
@@ -296,7 +504,9 @@ def cekMata_diabetesretinopati(request):
         imageName = "DR__" + str(user_id) + "__" + str(random_string) + ".jpg"
         currentTime = getCurrentTime()
         diagnosa = response.json()["predicted_classes"][0]
-        tx_hash = deploysmartcontract(str(user_id), imageName, currentTime, diagnosa)
+        tx_hash = deploysmartcontract(
+            str(user_id), currentTime, imageName, diagnosa, "diabetes retinopati"
+        )
         base64ToImg("./media/hasilpemeriksaan/" + imageName + "", img)
 
         pemeriksaan_id = savePemeriksaanToDB(
@@ -310,6 +520,8 @@ def cekMata_diabetesretinopati(request):
                 "penyakit": "diabetes retinopati",
             }
         )
+
+        sendToEmail(currentTime, user_id, "xx", diagnosa)
 
         return Response(
             {"diagnosa": diagnosa, "bc_id": tx_hash, "pemeriksaan_id": pemeriksaan_id},

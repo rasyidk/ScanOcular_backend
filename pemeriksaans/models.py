@@ -17,3 +17,10 @@ class Pemeriksaan(models.Model):
     url_image = models.TextField()
     diagnosa = models.TextField()
     penyakit = models.TextField()
+
+
+class Screening(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user2")
+    soal_id = models.IntegerField()
+    value = models.IntegerField()
+    type_penyakit = models.TextField()

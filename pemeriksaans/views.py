@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from pemeriksaans.serializer import PemeriksaanSerializer
+from pemeriksaans.serializer import ScreeningSerializer
 from pemeriksaans.models import Pemeriksaan
 from users.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -577,3 +578,12 @@ def pemeriksaan_detail(request, pemeriksaan_id):
             return Response({"message": "pemeriksaan deleted successfully"})
         except:
             return Response("error", status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def screening(request):
+    serializer = ScreeningSerializer(data=request.data)
+    if serializer.is_valid():
+        screening = serializer.save()
+        screening_id = screening.id
+        return Response({"id": screening_id}, status=status.HTTP_200_OK)

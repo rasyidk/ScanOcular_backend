@@ -55,6 +55,7 @@ def sendToEmail(currentTime, user_id, img, diagnosa):
     # Create the message object
     msg = MIMEMultipart()
 
+    print("USERRR EMAIL", user.email)
     # Add sender, recipient, subject, and body
     msg["From"] = "scanocular@gmail.com"
     msg["To"] = user.email
@@ -116,7 +117,7 @@ def sendToEmail(currentTime, user_id, img, diagnosa):
 
     # Send the email
     try:
-        server.sendmail(smtp_username, "sydcloneofficial@gmail.com", msg.as_string())
+        server.sendmail(smtp_username, user.email, msg.as_string())
         print("Email sent successfully!")
     except Exception as e:
         print(f"Error: {str(e)}")

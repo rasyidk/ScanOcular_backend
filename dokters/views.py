@@ -51,6 +51,7 @@ def signin(request):
                 "name": user.name,
                 "email": user.email,
                 "alamat": user.alamat,
+                "STR": user.STR,
                 # Add more fields as needed
             }
             return Response({"data": response_data})

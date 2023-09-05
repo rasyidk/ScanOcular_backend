@@ -24,3 +24,4 @@ class Screening(models.Model):
     soal_id = models.IntegerField()
     value = models.IntegerField()
     type_penyakit = models.TextField()
+    scan_id = models.TextField()

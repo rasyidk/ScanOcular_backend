@@ -10,6 +10,7 @@ from pemeriksaans.views import (
     cekMata_diabetesretinopati,
     cekMata_sc,
     screening,
+    screening_detail,
 )
 
 urlpatterns = [
@@ -19,5 +20,6 @@ urlpatterns = [
     path("cekmata/dr", cekMata_diabetesretinopati, name="cekMata_diabetesretinopati"),
     path("cekmata/sc", cekMata_sc, name="getsmartcontract"),
     path("cekmata/screening", screening, name="screening"),
+    path("cekmata/screening/<str:scan_id>", screening_detail, name="screeningx"),
     path("<int:pemeriksaan_id>", pemeriksaan_detail, name="pemeriksaan"),
 ]

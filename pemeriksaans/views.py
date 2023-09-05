@@ -6,9 +6,12 @@ from rest_framework import status
 from pemeriksaans.serializer import PemeriksaanSerializer
 from pemeriksaans.serializer import ScreeningSerializer
 from pemeriksaans.models import Pemeriksaan
+from pemeriksaans.models import Screening
 from users.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
+
+from django.core import serializers
 
 import json
 import base64
@@ -588,3 +591,26 @@ def screening(request):
         screening = serializer.save()
         screening_id = screening.id
         return Response({"id": screening_id}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def screening_detail(request, scan_id):
+    result_queryset = Screening.objects.filter(scan_id=scan_id)
+    relasi_data = []
+
+    for obj in result_queryset:
+        print(obj.type_penyakit)
+        relasi_info = {
+            "id": obj.id,
+            "soal_id": obj.soal_id,
+            "value": obj.value,
+            "type_penyakit": obj.type_penyakit,
+            "user_id": obj.user_id,
+            "scan_id": obj.scan_id,
+        }
+        relasi_data.append(relasi_info)
+
+    if len(relasi_data) == 0:
+        return Response({"message": "data not found"}, status=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response({"data": relasi_data}, status=status.HTTP_200_OK)

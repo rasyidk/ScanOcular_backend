@@ -11,6 +11,7 @@ from pemeriksaans.views import (
     cekMata_sc,
     screening,
     screening_detail,
+    pemeriksaan_all,
 )
 
 urlpatterns = [
@@ -21,5 +22,6 @@ urlpatterns = [
     path("cekmata/sc", cekMata_sc, name="getsmartcontract"),
     path("cekmata/screening", screening, name="screening"),
     path("cekmata/screening/<str:scan_id>", screening_detail, name="screeningx"),
+    path("user/<int:user_id>", pemeriksaan_all, name="pemeriksaan all"),
     path("<int:pemeriksaan_id>", pemeriksaan_detail, name="pemeriksaan"),
 ]

@@ -614,3 +614,30 @@ def screening_detail(request, scan_id):
         return Response({"message": "data not found"}, status=status.HTTP_404_NOT_FOUND)
     else:
         return Response({"data": relasi_data}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def pemeriksaan_all(request, user_id):
+    try:
+        relasi_queryset = Pemeriksaan.objects.filter(user=user_id)
+        relasi_data = []
+
+        for relasi in relasi_queryset:
+            relasi_info = {
+                "id": relasi.id,
+                "bc_id": relasi.bc_id,
+                "date": relasi.date,
+                "url_image": relasi.url_image,
+                "relasidokterklinik_id": relasi.relasidokterklinik_id,
+                "user_id": relasi.user_id,
+                "diagnosa": relasi.diagnosa,
+                "penyakit": relasi.penyakit,
+            }
+            relasi_data.append(relasi_info)
+            # Use the retrieved fields as needed
+        if len(relasi_data) == 0:
+            return Response("no data", status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"data": relasi_data}, status=status.HTTP_200_OK)
+    except:
+        Response("error", status=status.HTTP_404_NOT_FOUND)

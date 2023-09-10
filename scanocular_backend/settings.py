@@ -32,8 +32,8 @@ SECRET_KEY = "django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "203.175.10.56"]
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "203.175.10.56", "localhost"]
+# ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -85,16 +85,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    "http://localhost:3000",  # for localhost (REACT Default)
+    "http://192.168.0.50:3000",  # for network
+    "http://localhost:8080",  # for localhost (Developlemt)
+    "http://192.168.0.50:8080",  # for network (Development)
+)
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",  # for localhost (REACT Default)
+    "http://192.168.0.50:3000",  # for network
+    "http://localhost:8080",  # for localhost (Developlemt)
+    "http://192.168.0.50:8080",  # for network (Development)
 ]
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -107,15 +111,6 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
-
-CORS_ORIGIN_WHITELIST = (
-    "http://example.com",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
-    "http://localhost:3000",
-    "http://localhost:8080",
-)
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

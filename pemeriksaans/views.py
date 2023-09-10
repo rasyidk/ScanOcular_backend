@@ -556,7 +556,7 @@ def cekMata_katarak_type2(request):
     return Response(response.json(), status=status.HTTP_200_OK)
 
 
-@api_view(["POST", "GET", "DELETE"])
+@api_view(["POST", "GET", "DELETE", "PUT"])
 def pemeriksaan_detail(request, pemeriksaan_id):
     if request.method == "GET":
         try:
@@ -574,6 +574,15 @@ def pemeriksaan_detail(request, pemeriksaan_id):
 
         except ObjectDoesNotExist:
             return Response("doesnt exist", status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "PUT":
+        try:
+            data = json.loads(request.body)
+            statusx = data.get("status")
+            Pemeriksaan.objects.filter(id=pemeriksaan_id).update(status=statusx)
+            return Response({"message": statusx}, status=status.HTTP_200_OK)
+        except:
+            return Response("error", status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "DELETE":
         try:
@@ -593,27 +602,39 @@ def screening(request):
         return Response({"id": screening_id}, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["GET", "PUT"])
 def screening_detail(request, scan_id):
-    result_queryset = Screening.objects.filter(scan_id=scan_id)
-    relasi_data = []
+    if request.method == "GET":
+        result_queryset = Screening.objects.filter(scan_id=scan_id)
+        relasi_data = []
+        for obj in result_queryset:
+            print(obj.type_penyakit)
+            relasi_info = {
+                "id": obj.id,
+                "soal_id": obj.soal_id,
+                "value": obj.value,
+                "type_penyakit": obj.type_penyakit,
+                "user_id": obj.user_id,
+                "scan_id": obj.scan_id,
+                "status": obj.status,
+            }
+            relasi_data.append(relasi_info)
 
-    for obj in result_queryset:
-        print(obj.type_penyakit)
-        relasi_info = {
-            "id": obj.id,
-            "soal_id": obj.soal_id,
-            "value": obj.value,
-            "type_penyakit": obj.type_penyakit,
-            "user_id": obj.user_id,
-            "scan_id": obj.scan_id,
-        }
-        relasi_data.append(relasi_info)
+        if len(relasi_data) == 0:
+            return Response(
+                {"message": "data not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        else:
+            return Response({"data": relasi_data}, status=status.HTTP_200_OK)
 
-    if len(relasi_data) == 0:
-        return Response({"message": "data not found"}, status=status.HTTP_404_NOT_FOUND)
-    else:
-        return Response({"data": relasi_data}, status=status.HTTP_200_OK)
+    if request.method == "PUT":
+        try:
+            data = json.loads(request.body)
+            statusx = data.get("status")
+            Screening.objects.filter(id=scan_id).update(status=statusx)
+            return Response({"message": statusx}, status=status.HTTP_200_OK)
+        except:
+            return Response("error", status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["GET"])

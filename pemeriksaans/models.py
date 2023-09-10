@@ -17,6 +17,7 @@ class Pemeriksaan(models.Model):
     url_image = models.TextField()
     diagnosa = models.TextField()
     penyakit = models.TextField()
+    status = models.TextField(default="pending")
 
 
 class Screening(models.Model):
@@ -25,3 +26,4 @@ class Screening(models.Model):
     value = models.IntegerField()
     type_penyakit = models.TextField()
     scan_id = models.TextField()
+    status = models.TextField(default="pending")

@@ -8,7 +8,7 @@ def index(request):
     html = f"""
     <html>
         <body>
-            <h1>SCAN OCULAR!</h1>
+            <h1>TES TES TES!</h1>
             <p>The current time is { now }.</p>
         </body>
     </html>

@@ -32,8 +32,8 @@ SECRET_KEY = "django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "203.175.10.56", "localhost"]
-# ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", "203.175.10.56", "localhost"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = "scanocular_backend.urls"
@@ -87,7 +87,8 @@ WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_CREDENTIALS = False
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

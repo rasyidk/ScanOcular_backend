@@ -653,6 +653,7 @@ def pemeriksaan_all(request, user_id):
                 "user_id": relasi.user_id,
                 "diagnosa": relasi.diagnosa,
                 "penyakit": relasi.penyakit,
+                "status": relasi.status,
             }
             relasi_data.append(relasi_info)
             # Use the retrieved fields as needed

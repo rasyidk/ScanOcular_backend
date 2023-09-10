@@ -85,6 +85,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 
+CORS_ORIGIN_WHITELIST = (
+    "http://example.com",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://localhost:3000",
+    "http://localhost:8080",
+)
+
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # Note: Django modules for using databases are not support in serverless

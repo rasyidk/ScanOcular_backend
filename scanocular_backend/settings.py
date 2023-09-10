@@ -86,31 +86,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",  # for localhost (REACT Default)
-    "http://192.168.0.50:3000",  # for network
-    "http://localhost:8080",  # for localhost (Developlemt)
-    "http://192.168.0.50:8080",  # for network (Development)
-)
+CORS_ORIGIN_ALLOW_ALL = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",  # for localhost (REACT Default)
-    "http://192.168.0.50:3000",  # for network
-    "http://localhost:8080",  # for localhost (Developlemt)
-    "http://192.168.0.50:8080",  # for network (Development)
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

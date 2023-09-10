@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate
 from .models import Dokter
 from django.contrib.auth.hashers import check_password
 import bcrypt
+from django.core import serializers
+from django.http import JsonResponse
+import json
 
 
 @api_view(["POST"])
@@ -61,3 +64,29 @@ def signin(request):
             )
     except Dokter.DoesNotExist:
         return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET"])
+def dokters(request):
+    try:
+        all_data = Dokter.objects.all()
+        data = serializers.serialize("json", all_data)
+
+        data_list = [
+            {
+                "user_id": item.id,
+                "name": item.name,
+                "STR": item.STR,
+                "email": item.email,
+                "alamat": item.alamat,
+            }
+            for item in all_data
+        ]
+
+        # data = json.loads(data)
+        # response_data = {
+        #     "data": data,
+        # }
+        return Response({"data": data_list}, status=status.HTTP_200_OK)
+    except:
+        return Response({"message": "Error Occured"}, status=status.HTTP_404_NOT_FOUND)

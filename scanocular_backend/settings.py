@@ -84,7 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     "http://example.com",
     "http://127.0.0.1:8000",

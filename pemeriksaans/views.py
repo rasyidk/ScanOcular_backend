@@ -515,7 +515,7 @@ def cekMata_diabetesretinopati(request):
                 status=status.HTTP_200_OK,
             )
         else:
-            return Response({"message": "error"}, status=response.status_code)
+            return Response({"message": "error"}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response({"message": "not detected"}, status=status.HTTP_404_NOT_FOUND)
 

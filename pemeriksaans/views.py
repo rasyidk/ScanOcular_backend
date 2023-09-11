@@ -491,7 +491,7 @@ def cekMata_sc(request):
 def cekMata_diabetesretinopati(request):
     json_data = json.loads(request.body)
     img = json_data["img"]
-    user_id = json_data["user_id"]
+    # user_id = json_data["user_id"]
 
     url = "https://classify.roboflow.com/diabetic-retinopathy-screening-ai/1"
     params = {"api_key": "jROYHpfpWHzlprwa48L4"}
@@ -501,39 +501,41 @@ def cekMata_diabetesretinopati(request):
 
     # Make the POST request
     response = requests.post(url, params=params, data=img, headers=headers)
+    diagnosa = response.json()["predicted_classes"][0]
 
-    random_string = generate_random_string(10)
-
-    # Check for success or error
     if response.status_code == 200:
-        imageName = "DR__" + str(user_id) + "__" + str(random_string) + ".jpg"
-        currentTime = getCurrentTime()
-        diagnosa = response.json()["predicted_classes"][0]
-        tx_hash = deploysmartcontract(
-            str(user_id), currentTime, imageName, diagnosa, "diabetes retinopati"
-        )
-        base64ToImg("./media/hasilpemeriksaan/" + imageName + "", img)
-
-        pemeriksaan_id = savePemeriksaanToDB(
-            {
-                "bc_id": tx_hash,
-                "date": currentTime,
-                "url_image": imageName,
-                "relasidokterklinik": "1",
-                "user": str(user_id),
-                "diagnosa": diagnosa,
-                "penyakit": "diabetes retinopati",
-            }
-        )
-
-        sendToEmail(currentTime, user_id, "xx", diagnosa)
-
         return Response(
-            {"diagnosa": diagnosa, "bc_id": tx_hash, "pemeriksaan_id": pemeriksaan_id},
+            {"diagnosa": diagnosa},
             status=status.HTTP_200_OK,
         )
     else:
-        print("Error:", response.text)
+        return Response({"message": "error"}, status=response.status_code)
+
+    # random_string = generate_random_string(10)
+
+    # # Check for success or error
+    # if response.status_code == 200:
+    #     imageName = "DR__" + str(user_id) + "__" + str(random_string) + ".jpg"
+    #     currentTime = getCurrentTime()
+    #     diagnosa = response.json()["predicted_classes"][0]
+    #     tx_hash = deploysmartcontract(
+    #         str(user_id), currentTime, imageName, diagnosa, "diabetes retinopati"
+    #     )
+    #     base64ToImg("./media/hasilpemeriksaan/" + imageName + "", img)
+
+    #     pemeriksaan_id = savePemeriksaanToDB(
+    #         {
+    #             "bc_id": tx_hash,
+    #             "date": currentTime,
+    #             "url_image": imageName,
+    #             "relasidokterklinik": "1",
+    #             "user": str(user_id),
+    #             "diagnosa": diagnosa,
+    #             "penyakit": "diabetes retinopati",
+    #         }
+    #     )
+
+    #     sendToEmail(currentTime, user_id, "xx", diagnosa)
 
 
 @api_view(["POST"])

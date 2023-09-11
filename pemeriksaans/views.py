@@ -517,7 +517,7 @@ def pemeriksaan_get_all(request):
         relasi_data.append(relasi_info)
         # Use the retrieved fields as needed
 
-    return Response(relasi_data, status=status.HTTP_200_OK)
+    return Response({"data": relasi_data}, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])

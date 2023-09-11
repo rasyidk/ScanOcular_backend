@@ -22,6 +22,7 @@ urlpatterns = [
     path("cekmata/sc", cekMata_sc, name="getsmartcontract"),
     path("cekmata/screening", screening, name="screening"),
     path("cekmata/screening/<str:scan_id>", screening_detail, name="screeningx"),
+    # path("user/all", pemeriksaan_get_all, name="pemeriksaan"),
     path("user/<int:user_id>", pemeriksaan_all, name="pemeriksaan all"),
     path("<int:pemeriksaan_id>", pemeriksaan_detail, name="pemeriksaan"),
 ]

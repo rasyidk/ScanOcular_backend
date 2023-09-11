@@ -487,29 +487,37 @@ def cekMata_sc(request):
     return Response(res, status=status.HTTP_200_OK)
 
 
+@api_view(["GET"])
+def pemeriksaan_get_all(request):
+    relasi_queryset = Pemeriksaan.objects.select_related("user")
+
+
 @api_view(["POST"])
 def cekMata_diabetesretinopati(request):
-    json_data = json.loads(request.body)
-    img = json_data["img"]
-    # user_id = json_data["user_id"]
+    try:
+        json_data = json.loads(request.body)
+        img = json_data["img"]
+        # user_id = json_data["user_id"]
 
-    url = "https://classify.roboflow.com/diabetic-retinopathy-screening-ai/1"
-    params = {"api_key": "jROYHpfpWHzlprwa48L4"}
+        url = "https://classify.roboflow.com/diabetic-retinopathy-screening-ai/1"
+        params = {"api_key": "jROYHpfpWHzlprwa48L4"}
 
-    # Define the headers
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        # Define the headers
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-    # Make the POST request
-    response = requests.post(url, params=params, data=img, headers=headers)
-    diagnosa = response.json()["predicted_classes"][0]
+        # Make the POST request
+        response = requests.post(url, params=params, data=img, headers=headers)
+        diagnosa = response.json()["predicted_classes"][0]
 
-    if response.status_code == 200:
-        return Response(
-            {"diagnosa": diagnosa},
-            status=status.HTTP_200_OK,
-        )
-    else:
-        return Response({"message": "error"}, status=response.status_code)
+        if response.status_code == 200:
+            return Response(
+                {"diagnosa": diagnosa},
+                status=status.HTTP_200_OK,
+            )
+        else:
+            return Response({"message": "error"}, status=response.status_code)
+    except:
+        return Response({"message": "not detected"}, status=status.HTTP_404_NOT_FOUND)
 
     # random_string = generate_random_string(10)
 

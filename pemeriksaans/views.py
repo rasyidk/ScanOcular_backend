@@ -489,7 +489,21 @@ def cekMata_sc(request):
 
 @api_view(["GET"])
 def pemeriksaan_get_all(request):
-    relasi_queryset = Pemeriksaan.objects.select_related("user")
+    # relasi_queryset = Pemeriksaan.objects.select_related("user")
+    # relasi_data = []
+
+    # for relasi in relasi_queryset:
+    #     dokter_name = relasi.dokter.name
+    #     klinik_nama = relasi.klinik.nama_klinik
+
+    #     relasi_info = {
+    #         "dokter_name": dokter_name,
+    #         "nama_klinik": klinik_nama,
+    #     }
+    #     relasi_data.append(relasi_info)
+    #     # Use the retrieved fields as needed
+
+    return Response("relasi_data", status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])

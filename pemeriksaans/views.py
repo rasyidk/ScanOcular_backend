@@ -489,21 +489,35 @@ def cekMata_sc(request):
 
 @api_view(["GET"])
 def pemeriksaan_get_all(request):
-    # relasi_queryset = Pemeriksaan.objects.select_related("user")
-    # relasi_data = []
+    relasi_queryset = Pemeriksaan.objects.select_related("user")
+    relasi_data = []
 
-    # for relasi in relasi_queryset:
-    #     dokter_name = relasi.dokter.name
-    #     klinik_nama = relasi.klinik.nama_klinik
+    #  relasidokterklinik = models.ForeignKey(
+    #     Relasidokterklinik, on_delete=models.CASCADE, related_name="relasidokterklinik"
+    # )
+    # bc_id = models.CharField(max_length=255)
+    # date = models.TextField()
+    # url_image = models.TextField()
+    # diagnosa = models.TextField()
+    # penyakit = models.TextField()
+    # status = models.TextField(default="pending")
 
-    #     relasi_info = {
-    #         "dokter_name": dokter_name,
-    #         "nama_klinik": klinik_nama,
-    #     }
-    #     relasi_data.append(relasi_info)
-    #     # Use the retrieved fields as needed
+    for relasi in relasi_queryset:
+        relasi_info = {
+            "name": relasi.user.name,
+            "email": relasi.user.email,
+            "bc_id": relasi.bc_id,
+            "date": relasi.date,
+            "url_image": relasi.url_image,
+            "diagnosa": relasi.diagnosa,
+            "penyakit": relasi.penyakit,
+            "status": relasi.status,
+        }
 
-    return Response("relasi_data", status=status.HTTP_200_OK)
+        relasi_data.append(relasi_info)
+        # Use the retrieved fields as needed
+
+    return Response(relasi_data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])

@@ -504,6 +504,7 @@ def pemeriksaan_get_all(request):
 
     for relasi in relasi_queryset:
         relasi_info = {
+            "id": relasi.id,
             "name": relasi.user.name,
             "email": relasi.user.email,
             "bc_id": relasi.bc_id,

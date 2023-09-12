@@ -492,16 +492,6 @@ def pemeriksaan_get_all(request):
     relasi_queryset = Pemeriksaan.objects.select_related("user")
     relasi_data = []
 
-    #  relasidokterklinik = models.ForeignKey(
-    #     Relasidokterklinik, on_delete=models.CASCADE, related_name="relasidokterklinik"
-    # )
-    # bc_id = models.CharField(max_length=255)
-    # date = models.TextField()
-    # url_image = models.TextField()
-    # diagnosa = models.TextField()
-    # penyakit = models.TextField()
-    # status = models.TextField(default="pending")
-
     for relasi in relasi_queryset:
         relasi_info = {
             "id": relasi.id,
@@ -632,13 +622,33 @@ def pemeriksaan_detail(request, pemeriksaan_id):
             return Response("error", status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["POST"])
+@api_view(["POST", "GET"])
 def screening(request):
-    serializer = ScreeningSerializer(data=request.data)
-    if serializer.is_valid():
-        screening = serializer.save()
-        screening_id = screening.id
-        return Response({"id": screening_id}, status=status.HTTP_200_OK)
+    if request.method == "POST":
+        serializer = ScreeningSerializer(data=request.data)
+        if serializer.is_valid():
+            screening = serializer.save()
+            screening_id = screening.id
+            return Response({"id": screening_id}, status=status.HTTP_200_OK)
+    if request.method == "GET":
+        relasi_queryset = Screening.objects.select_related("user2")
+        relasi_data = []
+        for relasi in relasi_queryset:
+            relasi_info = {
+                "id": relasi.id,
+                "name": relasi.user.name,
+                "email": relasi.user.email,
+                "soal_id": relasi.soal_id,
+                "value": relasi.value,
+                "type_penyakit": relasi.type_penyakit,
+                "scan_id": relasi.scan_id,
+                "status": relasi.status,
+            }
+
+            relasi_data.append(relasi_info)
+            # Use the retrieved fields as needed
+
+        return Response({"data": relasi_data}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET", "PUT"])

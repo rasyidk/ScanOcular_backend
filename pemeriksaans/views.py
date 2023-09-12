@@ -630,8 +630,9 @@ def screening(request):
             screening = serializer.save()
             screening_id = screening.id
             return Response({"id": screening_id}, status=status.HTTP_200_OK)
+
     if request.method == "GET":
-        relasi_queryset = Screening.objects.select_related("user2")
+        relasi_queryset = Screening.objects.select_related("user")
         relasi_data = []
         for relasi in relasi_queryset:
             relasi_info = {
@@ -646,7 +647,7 @@ def screening(request):
             }
 
             relasi_data.append(relasi_info)
-            # Use the retrieved fields as needed
+        #     # Use the retrieved fields as needed
 
         return Response({"data": relasi_data}, status=status.HTTP_200_OK)
 

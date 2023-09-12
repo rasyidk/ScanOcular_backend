@@ -40,6 +40,55 @@ from email import encoders
 import os
 
 
+def DRsendToEmail(user_id, statusx, penyakit):
+    user = get_object_or_404(User, id=user_id)
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587  # Use 587 for TLS
+    smtp_username = "scanocular@gmail.com"
+    smtp_password = "nemkzgrrsfwdfeha"  # You may need an "App Password" if 2-Step Verification is enabled
+    msg = MIMEMultipart()
+    msg["From"] = "scanocular@gmail.com"
+    msg["To"] = user.email
+    msg["Subject"] = "Hasil Pemeriksaan SCANOCULAR"
+    html_body = """
+    <html>
+    <head></head>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #333; text-align: center;">HASIL PEMERIKSAAN SCANOCULAR</h1>
+        <p style="font-size: 16px; line-height: 1.6; color: #666;">
+            Nama : <b>{nama}</b><br>
+            NIK : <b>{nik}</b><br>
+            Penyakit : <b>{penyakit}</b><br>
+            Hasil Pemeriksaan : <b>{statusx}</b><br>
+        </p>
+        </div>
+    </body>
+    </html>
+    """
+    formatted_html = html_body.format(
+        nama=user.name, nik=user.NIK, penyakit=penyakit, statusx=statusx
+    )
+    msg.attach(MIMEText(formatted_html, "html"))
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        exit()
+
+        # Send the email
+    try:
+        server.sendmail(smtp_username, user.email, msg.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+        # Close the SMTP server connection
+    server.quit()
+
+
 def sendToEmail(currentTime, user_id, img, diagnosa):
     user = get_object_or_404(User, id=user_id)
     # response_data = {
@@ -681,8 +730,19 @@ def screening_detail(request, scan_id):
         try:
             data = json.loads(request.body)
             statusx = data.get("status")
-            Screening.objects.filter(id=scan_id).update(status=statusx)
-            return Response({"message": statusx}, status=status.HTTP_200_OK)
+
+            screenings_before_update = Screening.objects.filter(scan_id=scan_id)
+            global user_id
+            for i in screenings_before_update:
+                user_id = i.user_id
+            Screening.objects.filter(scan_id=scan_id).update(status=statusx)
+
+            DRsendToEmail(user_id, statusx, "diabetes retinopati")
+            return Response(
+                {"message": user_id},
+                status=status.HTTP_200_OK,
+            )
+
         except:
             return Response("error", status=status.HTTP_404_NOT_FOUND)
 

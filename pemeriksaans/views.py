@@ -470,9 +470,9 @@ def cekMata_katarak(request):
 
         print("loading...")
         # infer on a local image
-        # print(model.predict(xx, confidence=40, overlap=30).json())
-        # res = model.predict(xx, confidence=50, overlap=50).json()
-        res = model.predict(img, confidence=50, overlap=50).json()
+        print(model.predict(xx, confidence=40, overlap=30).json())
+        res = model.predict(xx, confidence=40, overlap=30).json()
+        # res = model.predict(img, confidence=50, overlap=50).json()
         print("selesai")
 
         print("print image")

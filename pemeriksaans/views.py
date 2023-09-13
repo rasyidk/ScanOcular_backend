@@ -465,8 +465,8 @@ def cekMata_katarak(request):
         random_string = generate_random_string(10)
 
         rf = Roboflow(api_key="jROYHpfpWHzlprwa48L4")
-        project = rf.workspace().project("eye-health3")
-        model = project.version(1).model
+        project = rf.workspace().project("cataractdetection")
+        model = project.version(2).model
 
         print("loading...")
         # infer on a local image

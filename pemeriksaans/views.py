@@ -486,7 +486,7 @@ def cekMata_katarak(request):
         )
 
         cv2.imwrite(
-            "./media/hasilpemeriksaan/" + random_string + ".jpg",
+            "./media/hasilpemeriksaan/" + imageName + ".jpg",
             xx,
         )
 

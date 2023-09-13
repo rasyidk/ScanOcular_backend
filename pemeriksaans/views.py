@@ -621,17 +621,30 @@ def cekMata_katarak_type2(request):
     img = json_data["img"]
     user_id = json_data["user_id"]
 
-    url = "https://classify.roboflow.com/eye_diseases_detects/1"
-    params = {"api_key": "jROYHpfpWHzlprwa48L4"}
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    response = requests.post(url, params=params, data=img, headers=headers)
+    rf = Roboflow(api_key="jROYHpfpWHzlprwa48L4")
+    project = rf.workspace().project("cataractdetection")
+    model = project.version(2).model
 
-    if response.status_code == 200:
-        print(response.json())
-    else:
-        print("Error:", response.text)
+    imgs = readb64(img)
 
-    return Response(response.json(), status=status.HTTP_200_OK)
+    # Load the cascade
+    # face_cascade = cv2.CascadeClassifier("./alleye.xml")
+
+    # # Detect faces
+    # faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    # infer on a local image
+    print(model.predict(imgs, confidence=40, overlap=30).json())
+    # url = "https://detect.roboflow.com/cataractdetection/2"
+    # params = {"api_key": "jROYHpfpWHzlprwa48L4"}
+    # headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    # response = requests.post(url, params=params, data=img, headers=headers)
+
+    # if response.status_code == 200:
+    #     print(response.json())
+    # else:
+    #     print("Error:", response.text)
+
+    # return Response(response.json(), status=status.HTTP_200_OK)
 
 
 @api_view(["POST", "GET", "DELETE", "PUT"])

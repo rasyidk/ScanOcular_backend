@@ -486,7 +486,7 @@ def cekMata_katarak(request):
         )
 
         cv2.imwrite(
-            "./media/hasilpemeriksaan/" + imageName + ".jpg",
+            "./media/hasilpemeriksaan/" + random_string + ".jpg",
             xx,
         )
 
@@ -504,7 +504,7 @@ def cekMata_katarak(request):
             {
                 "bc_id": tx_hash,
                 "date": currentTime,
-                "url_image": imageName,
+                "url_image": random_string,
                 "relasidokterklinik": "1",
                 "user": str(user_id),
                 "diagnosa": diagnosa,

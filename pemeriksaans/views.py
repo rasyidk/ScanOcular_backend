@@ -485,10 +485,10 @@ def cekMata_katarak(request):
             str(user_id), imageName, currentTime, diagnosa, "katarak"
         )
 
-        cv2.imwrite(
-            "./media/hasilpemeriksaan/" + imageName + "",
-            xx,
-        )
+        # cv2.imwrite(
+        #     "./media/hasilpemeriksaan/" + imageName + "",
+        #     xx,
+        # )
 
         # savePemeriksaanToDB(
         #     {

@@ -634,6 +634,7 @@ def cekMata_katarak_type2(request):
     # faces = face_cascade.detectMultiScale(gray, 1.1, 4)
     # infer on a local image
     print(model.predict(imgs, confidence=40, overlap=30).json())
+    res = model.predict(imgs, confidence=40, overlap=30).json()
     # url = "https://detect.roboflow.com/cataractdetection/2"
     # params = {"api_key": "jROYHpfpWHzlprwa48L4"}
     # headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -644,7 +645,7 @@ def cekMata_katarak_type2(request):
     # else:
     #     print("Error:", response.text)
 
-    # return Response(response.json(), status=status.HTTP_200_OK)
+    return Response(res, status=status.HTTP_200_OK)
 
 
 @api_view(["POST", "GET", "DELETE", "PUT"])

@@ -477,7 +477,7 @@ def cekMata_katarak(request):
 
         print("print image")
 
-        imageName = "" + str(user_id) + "__" + str(random_string) + ""
+        imageName = "" + str(user_id) + "__" + str(random_string) + ".jpg"
         currentTime = getCurrentTime()
         diagnosa = res["predictions"][0]["class"]
 
@@ -504,7 +504,7 @@ def cekMata_katarak(request):
             {
                 "bc_id": tx_hash,
                 "date": currentTime,
-                "url_image": imageName + ".jpg",
+                "url_image": imageName,
                 "relasidokterklinik": "1",
                 "user": str(user_id),
                 "diagnosa": diagnosa,

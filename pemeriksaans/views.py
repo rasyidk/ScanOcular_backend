@@ -398,6 +398,8 @@ def savePemeriksaanToDB(datax):
         pemeriksaan = serializer.save()
         pemeriksaan_id = pemeriksaan.id
         return pemeriksaan_id
+    else:
+        print("SERIALIZER NOT VALID")
 
 
 def generate_random_string(length):

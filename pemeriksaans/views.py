@@ -409,6 +409,9 @@ def generate_random_string(length):
     return "".join(random.choice(characters) for _ in range(length))
 
 
+# FINAL || DONE
+
+
 # Create your views here.
 @api_view(["POST", "GET"])
 def pemeriksaan(request):

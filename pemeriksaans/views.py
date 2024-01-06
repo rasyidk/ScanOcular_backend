@@ -399,7 +399,7 @@ def savePemeriksaanToDB(datax):
         pemeriksaan_id = pemeriksaan.id
         return pemeriksaan_id
     else:
-        print("SERIALIZER NOT VALID")
+        return 99
 
 
 def generate_random_string(length):

@@ -531,7 +531,6 @@ def cekMata_katarak(request):
                 "diagnosa": diagnosa,
                 "bc_id": tx_hash,
                 "pemeriksaan_id": pemeriksaan_id,
-                "test": "Test",
             },
             status=status.HTTP_200_OK,
         )

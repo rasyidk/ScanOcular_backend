@@ -400,7 +400,7 @@ def savePemeriksaanToDB(datax):
 
         pemeriksaan = serializer.save()
         pemeriksaan_id = pemeriksaan.id
-        return pemeriksaan_id, None
+        return pemeriksaan_id
     except ValidationError as e:
         error_message = f"Validation error: {e}"
         return 99, error_message

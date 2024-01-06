@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.serializers import ValidationError
 
 from pemeriksaans.serializer import PemeriksaanSerializer
 from pemeriksaans.serializer import ScreeningSerializer
@@ -393,13 +394,19 @@ def getsmartcontract(bc_id):
 
 
 def savePemeriksaanToDB(datax):
-    serializer = PemeriksaanSerializer(data=datax)
-    if serializer.is_valid():
+    try:
+        serializer = PemeriksaanSerializer(data=datax)
+        serializer.is_valid(raise_exception=True)
+
         pemeriksaan = serializer.save()
         pemeriksaan_id = pemeriksaan.id
-        return pemeriksaan_id
-    else:
-        return 99
+        return pemeriksaan_id, None
+    except ValidationError as e:
+        error_message = f"Validation error: {e}"
+        return 99, error_message
+    except Exception as e:
+        error_message = f"An unexpected error occurred: {e}"
+        return 99, error_message
 
 
 def generate_random_string(length):

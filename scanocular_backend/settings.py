@@ -85,6 +85,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "scanocular_backend.wsgi.app"
 
+APPEND_SLASH = False
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = ["*"]
@@ -107,8 +108,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "scanocular",
-        "USER": "root",
-        "PASSWORD": "",
+        "USER": "cgaa",
+        "PASSWORD": "123",
         "HOST": "localhost",  # Change this if your MySQL server is on a different host
         "PORT": "3306",  # Change this if your MySQL server is using a different port
     }

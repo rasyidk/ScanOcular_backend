@@ -489,6 +489,8 @@ def cekMata_katarak(request):
 
         print("print image")
 
+        print("res", res)
+
         imageName = "" + str(user_id) + "__" + str(random_string) + ".jpg"
         currentTime = getCurrentTime()
         diagnosa = res["predictions"][0]["class"]

@@ -40,6 +40,9 @@ from email.mime.base import MIMEBase
 from email import encoders
 import os
 
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.inception_v3 import preprocess_input
 
 def DRsendToEmail(user_id, statusx, penyakit):
     user = get_object_or_404(User, id=user_id)
@@ -475,28 +478,35 @@ def cekMata_katarak(request):
 
     if xx is not None:
         random_string = generate_random_string(10)
+        img_array = np.array(xx, dtype=np.uint8)
+        _, img_encoded = cv2.imencode('.png', img_array)
+        img_base64 = base64.b64encode(img_encoded.tobytes()).decode('utf-8')
+        print(img_base64)
 
-        rf = Roboflow(api_key="jROYHpfpWHzlprwa48L4")
-        project = rf.workspace().project("cataractdetection")
-        model = project.version(2).model
 
         print("loading...")
         # infer on a local image
         # print(model.predict(xx, confidence=40, overlap=30).json())
-        res = model.predict(xx, confidence=50, overlap=50).json()
-
+        model = load_model(os.path.join(os.getcwd(),"pemeriksaans","model.h5"))
+        image_data = base64.b64decode(img_base64)
+        img = Image.open(BytesIO(image_data))
+        img = img.resize((256, 256)) 
+        img_array = np.array(img)
+        img_array = img_array / 255.0  
+        img_array = np.expand_dims(img_array, axis=0)
+        prediction = model.predict(img_array)
+        res = "normal" if prediction.tolist()[0][0] < 0.5 else "cataract"
         print("selesai")
-
-        print("print image")
 
         print("res", res)
 
+
         imageName = "" + str(user_id) + "__" + str(random_string) + ".jpg"
         currentTime = getCurrentTime()
-        diagnosa = res["predictions"][0]["class"]
+        diagnosa = res
 
         tx_hash = deploysmartcontract(
-            str(user_id), imageName, currentTime, diagnosa, "katarak"
+            str(user_id), imageName, currentTime, str(diagnosa), "katarak"
         )
 
         cv2.imwrite(
